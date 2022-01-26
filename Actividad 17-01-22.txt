@@ -1,0 +1,92 @@
+drop database if exists operacion;
+create database operacion;
+\c operacion;
+
+create table operando(
+valor1 int not null,
+valor2 int not null,
+operacion int not null,
+total int not null,
+id int not null,
+constraint chk_operando check(valor2>0 and operacion>0));
+
+create table aud_operando(
+valor1 int not null,
+valor2 int not null,
+operacion int not null,
+total int not null,
+fecharegistro date not null,
+usuario varchar(30) not null);
+
+alter table operando
+add constraint pk_id
+primary key(id);
+
+
+
+insert into operando (valor1,valor2,operacion,total,id) values 
+(4,5,1,9,1),
+(20,9,2,11,2),
+(9,10,3,90,3);
+
+--if
+create or replace function insert_trigger() returns trigger 
+as $$
+begin
+    if new.operacion = 1 then
+        new.total = new.valor1 + new.valor2;
+    elsif new.operacion = 2 then
+        new.total = new.valor1 - new.valor2;
+    elsif new.operacion = 3 then
+        new.total = new.valor1 * new.valor2;
+    else
+        new.total = new.valor1 / new.valor2;
+    end if;
+insert into "aud_operando" values 
+(new.valor1,new.valor2,new.operacion,new.total, current_date,current_user);
+return new;
+end
+$$
+language plpgsql;
+
+-- case
+create or replace function insert_trigger() returns trigger 
+as $$
+begin
+    case
+        when new.operacion = 1 then
+            new.total = new.valor1 + new.valor2;
+        when new.operacion = 2 then
+            new.total = new.valor1 - new.valor2;
+        when new.operacion = 3 then
+            new.total = new.valor1 * new.valor2;
+        else
+            new.total = new.valor1 / new.valor2;
+    end case;
+insert into "aud_operando" values 
+(new.valor1,new.valor2,new.operacion,new.total, current_date,current_user);
+return new;
+end
+$$
+language plpgsql;
+
+
+create trigger nuevo_tr before insert 
+on operando
+for each row 
+execute procedure insert_trigger();
+
+insert into operando(valor1,valor2,operacion,id) values (2,2,1,4);
+
+select operando.id,operando.valor1,operando.valor2,operando.operacion,operando.total,
+	case
+		when valor1 > valor2 then 'Maximo'
+		when valor1 = valor2 then 'Iguales'
+	else 
+		'Minimo'
+	end intervalo
+from operando
+order by id asc;
+
+usuario = (select usename from pg_catalog.pg_user 
+where usename= current user);	
