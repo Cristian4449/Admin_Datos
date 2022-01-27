@@ -8,3 +8,13 @@ create user cliente with password 'cliente';
 grant insert, select, update on ticket to cliente;
 grant select on vuelo,aerolinea,avion to cliente;
 grant insert,select,update,delete on piloto, azafata to cliente;
+
+create role usuario with password 'usuario';
+
+grant connect on aeropuerto to usuario;
+grant insert, select on ticket to usuario;
+grant select on vuelo,aerolinea,avion to usuario;
+grant update on pasajero to usuario;
+
+create user Camilo with password 'Camilo'
+grant usuario to Camilo;
