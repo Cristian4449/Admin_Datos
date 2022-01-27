@@ -565,3 +565,14 @@ insert into piloto_idioma (fk_id_piloto, fk_id_idioma, nivel_piloto_idioma) valu
 insert into categoria values (7,'vip');
 UPDATE VUELO_AZAFATA SET novedades_vuelo_azafata='SUFRE DE VERTIGO' WHERE FK_ID_VUELO=1;
 insert into celular values (17, 32123, 1), (18, 21323, 1);
+
+create user supervisor with password 'supervisor';
+grant select, insert, update, delete on avion to supervisor;
+grant insert, select, update on aerolinea, vuelo to supervisor;
+grant insert, select on ticket to supervisor;
+grant select on piloto,azafata to supervisor;
+
+create user cliente with password 'cliente';
+grant insert, select, update on ticket to cliente;
+grant select on vuelo,aerolinea,avion to cliente;
+grant insert,select,update,delete on piloto, azafata to cliente;
