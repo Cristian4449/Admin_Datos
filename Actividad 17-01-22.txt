@@ -90,16 +90,3 @@ order by id asc;
 
 usuario = (select usename from pg_catalog.pg_user 
 where usename= current user);	
-create user administrador with superuser password 'maicol756756';
-
-create user empleadoinsert with password 'empleadoinsert';
-grant select, insert on calculo to empleadoinsert;
-
-create user empleadoupdate with password 'empleadoupdate';
-grant select, update on calculo to empleadoupdate;
-
-create user empleadodelete with password 'empleadodelete';
-grant select, delete on calculo to empleadodelete;
-
-drop user nombre;
-revoke select, insert on calculo to nombre,
