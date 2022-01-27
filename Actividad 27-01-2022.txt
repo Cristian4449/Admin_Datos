@@ -18,3 +18,6 @@ grant update on pasajero to usuario;
 
 create user Camilo with password 'Camilo'
 grant usuario to Camilo;
+
+create role usuario
+nosuperuser nocreatedb nocreaterole noinherit;
