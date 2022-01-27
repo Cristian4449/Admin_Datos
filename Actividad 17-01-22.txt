@@ -86,7 +86,6 @@ select operando.id,operando.valor1,operando.valor2,operando.operacion,operando.t
 		'Minimo'
 	end intervalo
 from operando
-order by id asc;
+order by id asc;	
 
-usuario = (select usename from pg_catalog.pg_user 
-where usename= current user);	
+
