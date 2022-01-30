@@ -1,0 +1,8 @@
+create user administrador with superuser password 'Cristian10'
+grant connect on database aeropuerto;
+
+-- Crear backup
+pg_dump -U administrador -W -h localhost aeropuerto > backup.sql
+
+-- Cargar backup
+psql -U administrador -W -h localhost aeropuerto < backup.sql
